@@ -3,7 +3,9 @@ import { runDemoScan } from "./demoEngine";
 
 const rawBaseUrl = (import.meta.env?.VITE_API_BASE_URL as string | undefined)?.trim();
 
-export const API_BASE_URL = rawBaseUrl ? rawBaseUrl.replace(/\/$/, "") : "";
+export const API_BASE_URL = rawBaseUrl
+  ? rawBaseUrl.replace(/\/+$/, "").replace(/\/api$/i, "")
+  : "";
 export const API_DISPLAY_URL =
   API_BASE_URL ||
   (import.meta.env?.DEV
@@ -11,7 +13,8 @@ export const API_DISPLAY_URL =
     : "Same-origin API (/api)");
 
 export function buildApiUrl(path: string): string {
-  return `${API_BASE_URL}${path}`;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
 }
 
 export interface TargetValidationApiResponse {
