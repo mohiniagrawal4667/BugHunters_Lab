@@ -1,0 +1,53 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node / Frontend build & cache
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.npm-cache/
+.npm-cache.zip
+
+# Logs
+logs/
+*.log
+
+# Python / Virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Local SQLite databases & scan artifacts
+backend/data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Workspace scratch, rollback, screenshot, and asset helper files
+.pdfcheck/
+.pptx_extract/
+.rollback/
+.rollback-current/
+.rollback-exact/
+.shots/
+.shots-restored/
+.tmp/
+.chrome-profile*/
+.deck.zip
+.extract-deck.cjs
+.inspect-assets.py
+.process-assets.py
+frontend_tests/.test-bundle.mjs
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
