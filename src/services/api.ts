@@ -1,10 +1,14 @@
 import type { CheckId, Finding, Scan, ScanHandlers, ScanInput, ScanRunResult } from "../types";
 import { runDemoScan } from "./demoEngine";
 
-const rawBaseUrl = ((import.meta as { env?: Record<string, string | undefined> }).env?.VITE_API_BASE_URL)?.trim();
+const rawBaseUrl = (import.meta.env?.VITE_API_BASE_URL as string | undefined)?.trim();
 
 export const API_BASE_URL = rawBaseUrl ? rawBaseUrl.replace(/\/$/, "") : "";
-export const API_DISPLAY_URL = API_BASE_URL || "Vite proxy (/api -> http://127.0.0.1:8000)";
+export const API_DISPLAY_URL =
+  API_BASE_URL ||
+  (import.meta.env?.DEV
+    ? "Vite proxy (/api -> http://127.0.0.1:8000)"
+    : "Same-origin API (/api)");
 
 export function buildApiUrl(path: string): string {
   return `${API_BASE_URL}${path}`;
@@ -91,7 +95,7 @@ export async function validateTargetWithBackend(
       ok: false,
       networkError: true,
       error:
-        "Cannot reach the FastAPI validation backend. Ensure uvicorn is running on port 8000.",
+        "Cannot reach the FastAPI validation backend. Ensure the API server is running and reachable.",
     };
   }
 }
@@ -235,7 +239,7 @@ export async function createLiveScanOnBackend(
     }
     return {
       ok: false,
-      error: "Cannot reach the FastAPI backend to start the scan. Ensure uvicorn is running.",
+      error: "Cannot reach the FastAPI backend to start the scan. Ensure the API server is running and reachable.",
     };
   }
 }

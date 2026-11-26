@@ -30,8 +30,19 @@ def _parse_origins(raw: str | None) -> tuple[str, ...]:
         return (
             "http://127.0.0.1:5173",
             "http://localhost:5173",
+            "https://bughunterslab.vercel.app",
         )
     return tuple(origin.strip() for origin in raw.split(",") if origin.strip())
+
+
+def _default_database_path() -> Path:
+    explicit = os.getenv("BHL_DB_PATH")
+    if explicit:
+        return Path(explicit)
+    # Vercel serverless filesystem (/var/task) is read-only; /tmp is writable at runtime.
+    if os.getenv("VERCEL"):
+        return Path("/tmp/bughunterlab.db")
+    return Path(__file__).resolve().parents[1] / "data" / "bughunterlab.db"
 
 
 @dataclass(frozen=True)
@@ -51,14 +62,7 @@ class Settings:
     max_redirects: int = int(os.getenv("BHL_MAX_REDIRECTS", "5"))
     min_request_interval_seconds: float = float(os.getenv("BHL_MIN_REQUEST_INTERVAL", "0.15"))
     max_requests_per_scan: int = int(os.getenv("BHL_MAX_REQUESTS_PER_SCAN", "25"))
-    database_path: Path = field(
-        default_factory=lambda: Path(
-            os.getenv(
-                "BHL_DB_PATH",
-                str(Path(__file__).resolve().parents[1] / "data" / "bughunterlab.db"),
-            )
-        )
-    )
+    database_path: Path = field(default_factory=_default_database_path)
 
 
 settings = Settings()
