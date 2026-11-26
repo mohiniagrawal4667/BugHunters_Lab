@@ -152,10 +152,4 @@ npm run build
 
 **Institution**: GLA University, Mathura
 
-| Member | Role / Contributions |
-| --- | --- |
-| *Team Member 1* | Security architecture, SSRF & target validation, scanner modules |
-| *Team Member 2* | FastAPI backend, SQLite persistence, scan orchestration & testing |
-| *Team Member 3* | React/TypeScript UI, Evidence Log, Case Records & PDF reporting |
 
-*(Update member names above prior to final submission if required by your hackathon rules.)*
